@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'resque/await/migration'
 
 class Resque::Await::Migration::Test < ActiveSupport::TestCase
   setup do
