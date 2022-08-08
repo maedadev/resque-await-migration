@@ -1,21 +1,7 @@
-begin
-  require 'bundler/setup'
-rescue LoadError
-  puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
-end
-
-require 'rdoc/task'
-
-RDoc::Task.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'Resque::Await::Migration'
-  rdoc.options << '--line-numbers'
-  rdoc.rdoc_files.include('README.md')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
-
+require 'bundler/setup'
 require 'bundler/gem_tasks'
 
+# Test Tasks
 require 'rake/testtask'
 
 Rake::TestTask.new(:test) do |t|
@@ -25,3 +11,22 @@ Rake::TestTask.new(:test) do |t|
 end
 
 task default: :test
+
+
+# DB Setup And DB Tasks
+require_relative "./test/active_record_setting"
+Test::ActiveRecordSetting.database_tasks_setting(ENV['RAILS_ENV'] || 'development')
+
+task :environment do
+  Test::ActiveRecordSetting.establish_connection(ENV['RAILS_ENV'] || 'development')
+end
+
+load 'active_record/railties/databases.rake'
+
+
+# Resque Tasks
+require 'resque'
+require 'resque/tasks'
+
+# Debug
+require_relative './lib/resque/await/migration'
