@@ -22,3 +22,11 @@ task :environment do
 end
 
 load 'active_record/railties/databases.rake'
+
+
+# Resque Tasks
+require 'resque'
+require 'resque/tasks'
+
+# Debug
+require_relative './lib/resque/await/migration'
