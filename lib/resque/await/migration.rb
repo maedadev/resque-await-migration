@@ -10,8 +10,14 @@ module Resque
           Resque::Await::Migration::Controller.start
         end
 
-        Resque.worker_exit do
-          Resque::Await::Migration::Controller.stop_if_alive
+        if Resque.respond_to?(:worker_exit)
+          Resque.worker_exit do
+            Resque::Await::Migration::Controller.stop_if_alive
+          end
+        else
+          Kernel.at_exit do
+            Resque::Await::Migration::Controller.stop_if_alive
+          end
         end
       end
       module_function :setup
