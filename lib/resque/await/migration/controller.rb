@@ -26,8 +26,8 @@ module Resque
 
           def check_in_forked(parent_pid)
 
-            interval         = ENV['INTERVAL'] || 5
-            timeout_limit    = ENV['AWAIT_MIGRATION_LIMIT'] || 60 * 60 # 60 minutes
+            interval         = ENV['INTERVAL']&.to_i || 5
+            timeout_limit    = ENV['AWAIT_MIGRATION_LIMIT']&.to_i || 60 * 60 # 60 minutes
             usr2_was_sent_at = Time.now.to_i
 
             _info_log "Migration is needed. Send signal:USR2 to PID:#{parent_pid}"
