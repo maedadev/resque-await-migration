@@ -1,4 +1,5 @@
 .bundle/
+.project
 log/*.log
 pkg/
 db/*.sqlite3
